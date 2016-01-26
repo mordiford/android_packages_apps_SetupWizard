@@ -67,9 +67,15 @@ public class CMSetupWizardData extends AbstractSetupData {
         if (SetupWizardUtils.hasGMS(mContext)) {
             pages.add(new GmsAccountPage(mContext, this).setHidden(true));
         }
+        if (!SetupWizardUtils.hasLeanback(mContext) &&
+                SetupWizardUtils.isPackageInstalled(mContext,
+                    mContext.getString(R.string.cm_account_package_name))) {
+            pages.add(new CyanogenServicesPage(mContext, this).setHidden(true));
+        }
         if (SetupWizardUtils.hasFingerprint(mContext) && SetupWizardUtils.isOwner()) {
             pages.add(new FingerprintSetupPage(mContext, this));
         }
+        pages.add(new CyanogenSettingsPage(mContext, this));
         pages.add(new OtherSettingsPage(mContext, this));
         pages.add(new DateTimePage(mContext, this));
         pages.add(new FinishPage(mContext, this));
@@ -83,6 +89,7 @@ public class CMSetupWizardData extends AbstractSetupData {
             showHideDataSimPage();
             showHideSimMissingPage();
             showHideMobileDataPage();
+            updateWelcomePage();
         } else if (intent.getAction()
                 .equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
             showHideMobileDataPage();
@@ -108,6 +115,11 @@ public class CMSetupWizardData extends AbstractSetupData {
                 (GmsAccountPage) getPage(GmsAccountPage.TAG);
         if (gmsAccountPage != null) {
             gmsAccountPage.setHidden(!isConnected && gmsAccountPage.canSkip());
+        }
+        CyanogenServicesPage cyanogenServicesPage =
+                (CyanogenServicesPage) getPage(CyanogenServicesPage.TAG);
+        if (cyanogenServicesPage != null) {
+            cyanogenServicesPage.setHidden(!isConnected);
         }
     }
 
@@ -146,6 +158,13 @@ public class CMSetupWizardData extends AbstractSetupData {
         DateTimePage dateTimePage = (DateTimePage) getPage(DateTimePage.TAG);
         if (dateTimePage != null) {
             dateTimePage.setHidden(mTimeZoneSet & mTimeSet);
+        }
+    }
+
+    private void updateWelcomePage() {
+        WelcomePage welcomePage = (WelcomePage) getPage(WelcomePage.TAG);
+        if (welcomePage != null) {
+            welcomePage.simChanged();
         }
     }
 

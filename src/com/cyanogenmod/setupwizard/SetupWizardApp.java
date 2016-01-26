@@ -34,6 +34,7 @@ public class SetupWizardApp extends Application {
 
     public static final String ACTION_FINISHED = "com.cyanogenmod.setupwizard.SETUP_FINISHED";
 
+    public static final String ACCOUNT_TYPE_CYANOGEN = "com.cyanogen";
     public static final String ACCOUNT_TYPE_GMS = "com.google";
 
     public static final String ACTION_SETUP_WIFI = "com.android.net.wifi.SETUP_WIFI_NETWORK";
@@ -44,9 +45,12 @@ public class SetupWizardApp extends Application {
     public static final String EXTRA_FIRST_RUN = "firstRun";
     public static final String EXTRA_ALLOW_SKIP = "allowSkip";
     public static final String EXTRA_AUTO_FINISH = "wifi_auto_finish_on_connect";
+    public static final String EXTRA_SHOW_BUTTON_BAR = "extra_prefs_show_button_bar";
     public static final String EXTRA_USE_IMMERSIVE = "useImmersiveMode";
     public static final String EXTRA_THEME = "theme";
     public static final String EXTRA_MATERIAL_LIGHT = "material_light";
+    public static final String EXTRA_CKSOP = "cksOp";
+    public static final String EXTRA_LOGIN_FOR_KILL_SWITCH = "authCks";
     public static final String EXTRA_TITLE = "title";
     public static final String EXTRA_DETAILS = "details";
 
@@ -61,13 +65,17 @@ public class SetupWizardApp extends Application {
     public static final int REQUEST_CODE_SETUP_WIFI = 0;
     public static final int REQUEST_CODE_SETUP_GMS= 1;
     public static final int REQUEST_CODE_RESTORE_GMS= 2;
-    public static final int REQUEST_CODE_SETUP_CAPTIVE_PORTAL= 3;
-    public static final int REQUEST_CODE_SETUP_BLUETOOTH= 4;
-    public static final int REQUEST_CODE_SETUP_FINGERPRINT = 5;
+    public static final int REQUEST_CODE_SETUP_CYANOGEN= 3;
+    public static final int REQUEST_CODE_SETUP_CAPTIVE_PORTAL= 4;
+    public static final int REQUEST_CODE_SETUP_BLUETOOTH= 5;
+    public static final int REQUEST_CODE_UNLOCK = 6;
+    public static final int REQUEST_CODE_SETUP_FINGERPRINT = 7;
 
     public static final int RADIO_READY_TIMEOUT = 10 * 1000;
 
     private boolean mIsRadioReady = false;
+
+    private boolean mIsAuthorized = false;
 
     private StatusBarManager mStatusBarManager;
 
@@ -118,6 +126,14 @@ public class SetupWizardApp extends Application {
             mHandler.removeCallbacks(mRadioTimeoutRunnable);
         }
         mIsRadioReady = radioReady;
+    }
+
+    public boolean isAuthorized() {
+        return mIsAuthorized;
+    }
+
+    public void setIsAuthorized(boolean isAuthorized) {
+        mIsAuthorized = isAuthorized;
     }
 
     public void disableStatusBar() {
