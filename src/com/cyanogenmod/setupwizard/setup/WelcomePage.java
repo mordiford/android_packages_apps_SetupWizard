@@ -167,8 +167,8 @@ public class WelcomePage extends SetupPage {
     }
 
     public void simChanged() {
-        if (mWelcomeFragment != null) {
-            mWelcomeFragment.simChanged();
+        if (mWelcomeFragment != null) {     
+            mWelcomeFragment.fetchAndUpdateSimLocale();
         }
     }
 
