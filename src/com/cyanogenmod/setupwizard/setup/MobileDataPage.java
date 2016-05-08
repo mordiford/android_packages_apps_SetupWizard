@@ -237,9 +237,9 @@ public class MobileDataPage extends SetupPage {
         private void updateCarrierText() {
             if (mIsAttached) {
                 String name =
-                        mPhone.getSimOperatorNameForSubscription(subInfoRecord.getSubscriptionId());
+                    mPhone.getSimOperatorNameForSubscription(SubscriptionManager.getDefaultDataSubId());
                 if (TextUtils.isEmpty(name)) {
-                    name = mPhone.getNetworkOperatorName(subInfoRecord.getSubscriptionId());
+                     name = mPhone.getNetworkOperatorName(SubscriptionManager.getDefaultDataSubId());
                 }
                 if (TextUtils.isEmpty(name)) {
                     if (mServiceState != null && mServiceState.isEmergencyOnly()) {
