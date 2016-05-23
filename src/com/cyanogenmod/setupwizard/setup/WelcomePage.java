@@ -309,6 +309,25 @@ public class WelcomePage extends SetupPage {
                 }
             }
         }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            mPaused = true;>>>
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            mPaused = false;
+            if (mLanguagePicker != null) {
+                mLanguagePicker.setEnabled(true);
+            }
+            if (mPendingLocaleUpdate) {
+                mPendingLocaleUpdate = false;
+                fetchAndUpdateSimLocale();
+            }
+        }
     }
 
 }
